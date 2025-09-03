@@ -46,7 +46,7 @@
     "@remix-run/react": "latest",
     "@sveltejs/kit": "latest",
     "@vercel/analytics": "latest",
-    "app": "file:./app"
+    "app": "file:./app",
     "assets": "latest",
     "autoprefixer": "^10.4.20",
     "chart.js": "latest",
