@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import Image from "next/image"
+import Link from "next/link"
 
 // Demo users for different roles
 const demoUsers = {
@@ -28,6 +29,8 @@ export default function LoginPage() {
     if (user) {
       setCurrentUser(user)
       setIsLoggedIn(true)
+      // Store user in localStorage for persistence across pages
+      localStorage.setItem("currentUser", JSON.stringify(user))
     } else {
       alert("Invalid credentials. Try: admin/admin123, manager/manager123, or field/field123")
     }
@@ -39,12 +42,14 @@ export default function LoginPage() {
     setUsername("")
     setPassword("")
     setSelectedRole("")
+    // Clear user from localStorage
+    localStorage.removeItem("currentUser")
   }
 
   if (isLoggedIn && currentUser) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-teal-100 flex items-center justify-center p-4">
-        <Card className="w-full max-w-md">
+        <Card className="w-full max-w-2xl">
           <CardHeader className="text-center">
             <div className="flex justify-center mb-4">
               <Image
@@ -55,10 +60,10 @@ export default function LoginPage() {
                 className="rounded-full"
               />
             </div>
-            <CardTitle className="text-2xl text-emerald-700">Welcome!</CardTitle>
+            <CardTitle className="text-2xl text-emerald-700">Welcome to Hygiene Quest Dashboard!</CardTitle>
             <CardDescription>Logged in as {currentUser.role.replace("_", " ").toUpperCase()}</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-6">
             <div className="text-center space-y-2">
               <p className="text-sm text-muted-foreground">
                 <strong>Username:</strong> {currentUser.username}
@@ -96,7 +101,23 @@ export default function LoginPage() {
               )}
             </div>
 
-            <Button onClick={handleLogout} className="w-full bg-emerald-600 hover:bg-emerald-700">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <Link href="/dashboard">
+                <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white">📊 Dashboard</Button>
+              </Link>
+              <Link href="/tables">
+                <Button className="w-full bg-teal-600 hover:bg-teal-700 text-white">📋 Attendance Analysis</Button>
+              </Link>
+              <Link href="/billing">
+                <Button className="w-full bg-cyan-600 hover:bg-cyan-700 text-white">🛒 Dettol Sales</Button>
+              </Link>
+            </div>
+
+            <Button
+              onClick={handleLogout}
+              variant="outline"
+              className="w-full border-emerald-600 text-emerald-600 hover:bg-emerald-50 bg-transparent"
+            >
               Logout
             </Button>
           </CardContent>
